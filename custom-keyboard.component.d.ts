@@ -1,5 +1,5 @@
 import { OnInit } from '@angular/core';
-import { AppService } from 'providers/appService';
+import { CustomKeyboardService } from 'custom-keyboard.service';
 import { Subscription } from 'rxjs';
 export declare class CustomKeyboardComponent implements OnInit {
     private customKeyboardService;
@@ -10,7 +10,7 @@ export declare class CustomKeyboardComponent implements OnInit {
     caretPos: number;
     inputTextArea: any;
     inputType: string;
-    constructor(customKeyboardService: AppService);
+    constructor(customKeyboardService: CustomKeyboardService);
     getRecrods(Json: any): void;
     ngOnInit(): void;
     keyPress(event: any): void;
