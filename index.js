@@ -1,6 +1,8 @@
 import { Component, Directive, ElementRef, Injectable, NgModule, Pipe } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Http } from '@angular/http';
+import 'rxjs/add/operator/toPromise';
+import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { FormsModule } from '@angular/forms';
 
@@ -20,15 +22,6 @@ var CustomKeyboardService = (function () {
     };
     return CustomKeyboardService;
 }());
-//   ngOnInit(): void {
-//     this.emit('inputType','password')
-//   }
-//   filterOn(id: string): Observable<any> {
-//     return (this.subject.filter(d => (d.id === id)));
-// };
-// emit(id: string, options?: any) {
-//   this.subject.next({ id: id, data: options });
-// }
 CustomKeyboardService.decorators = [
     { type: Injectable },
 ];
@@ -49,15 +42,6 @@ var CustomKeyboardComponent = (function () {
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
-        this.inputType = "text";
-        // this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(d => {
-        //   if (d.error) {
-        //     console.log(d.error);
-        //   }
-        //   else {
-        //     this.inputType=d.data;
-        //   }
-        // });
         this.getRecrods(customKeyboardService.type);
     }
     /**
@@ -78,7 +62,6 @@ var CustomKeyboardComponent = (function () {
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.caretPos = 0;
-        //this.inputType= "";
     };
     /**
      * @param {?} event
@@ -301,7 +284,7 @@ CustomKeyboardModule.decorators = [
                     CustomKeyboardComponent,
                     CustomKeyboardDirective,
                     CustomKeyboardPipe,
-                ],
+                ]
             },] },
 ];
 /**

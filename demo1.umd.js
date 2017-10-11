@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/http'), require('rxjs/add/operator/map'), require('@angular/forms')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/http', 'rxjs/add/operator/map', '@angular/forms'], factory) :
-	(factory((global.demo1 = {}),global.core,global.common,global.http,null,global.forms));
-}(this, (function (exports,core,common,http,map,forms) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/http'), require('rxjs/add/operator/toPromise'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/map'), require('@angular/forms')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/http', 'rxjs/add/operator/toPromise', 'rxjs/add/operator/catch', 'rxjs/add/operator/map', '@angular/forms'], factory) :
+	(factory((global.demo1 = {}),global.core,global.common,global.http,null,null,null,global.forms));
+}(this, (function (exports,core,common,http,toPromise,_catch,map,forms) { 'use strict';
 
 var CustomKeyboardService = (function () {
     /**
@@ -20,15 +20,6 @@ var CustomKeyboardService = (function () {
     };
     return CustomKeyboardService;
 }());
-//   ngOnInit(): void {
-//     this.emit('inputType','password')
-//   }
-//   filterOn(id: string): Observable<any> {
-//     return (this.subject.filter(d => (d.id === id)));
-// };
-// emit(id: string, options?: any) {
-//   this.subject.next({ id: id, data: options });
-// }
 CustomKeyboardService.decorators = [
     { type: core.Injectable },
 ];
@@ -49,15 +40,6 @@ var CustomKeyboardComponent = (function () {
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
-        this.inputType = "text";
-        // this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(d => {
-        //   if (d.error) {
-        //     console.log(d.error);
-        //   }
-        //   else {
-        //     this.inputType=d.data;
-        //   }
-        // });
         this.getRecrods(customKeyboardService.type);
     }
     /**
@@ -78,7 +60,6 @@ var CustomKeyboardComponent = (function () {
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.caretPos = 0;
-        //this.inputType= "";
     };
     /**
      * @param {?} event
@@ -301,7 +282,7 @@ CustomKeyboardModule.decorators = [
                     CustomKeyboardComponent,
                     CustomKeyboardDirective,
                     CustomKeyboardPipe,
-                ],
+                ]
             },] },
 ];
 /**
