@@ -43,6 +43,7 @@ var CustomKeyboardComponent = (function () {
         this.inputstr = "";
         this.caretPos = 0;
         this.getRecrods(customKeyboardService.type);
+        alert(this.inputType);
     }
     /**
      * @param {?} Json
@@ -51,6 +52,7 @@ var CustomKeyboardComponent = (function () {
     CustomKeyboardComponent.prototype.getRecrods = function (Json) {
         var _this = this;
         this.customKeyboardService.setInputReference().subscribe(function (value) {
+            alert(value);
             _this.inputType = value;
         });
     };
