@@ -1,68 +1,74 @@
 import { Component, Directive, ElementRef, Injectable, NgModule, Pipe } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import 'rxjs/add/operator/toPromise';
-import 'rxjs/add/operator/catch';
+import { Http } from '@angular/http';
 import 'rxjs/add/operator/map';
 import { FormsModule } from '@angular/forms';
 
 var CustomKeyboardService = (function () {
-    function CustomKeyboardService() {
+    /**
+     * @param {?} _http
+     */
+    function CustomKeyboardService(_http) {
+        this._http = _http;
     }
     /**
-     * @param {?} id
      * @return {?}
      */
-    CustomKeyboardService.prototype.filterOn = function (id) {
-        return (this.subject.filter(function (d) { return (d.id === id); }));
-    };
-    
-    /**
-     * @param {?} id
-     * @param {?=} options
-     * @return {?}
-     */
-    CustomKeyboardService.prototype.emit = function (id, options) {
-        this.subject.next({ id: id, data: options });
+    CustomKeyboardService.prototype.setInputReference = function () {
+        return this._http.get(this.type)
+            .map(function (response) { return response.json(); });
     };
     return CustomKeyboardService;
 }());
+//   ngOnInit(): void {
+//     this.emit('inputType','password')
+//   }
+//   filterOn(id: string): Observable<any> {
+//     return (this.subject.filter(d => (d.id === id)));
+// };
+// emit(id: string, options?: any) {
+//   this.subject.next({ id: id, data: options });
+// }
 CustomKeyboardService.decorators = [
     { type: Injectable },
 ];
 /**
  * @nocollapse
  */
-CustomKeyboardService.ctorParameters = function () { return []; };
+CustomKeyboardService.ctorParameters = function () { return [
+    { type: Http, },
+]; };
 
 var CustomKeyboardComponent = (function () {
     /**
      * @param {?} customKeyboardService
      */
     function CustomKeyboardComponent(customKeyboardService) {
-        var _this = this;
         this.customKeyboardService = customKeyboardService;
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
         this.inputType = "text";
-        this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(function (d) {
-            if (d.error) {
-                console.log(d.error);
-            }
-            else {
-                _this.inputType = d.data;
-            }
-        });
+        // this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(d => {
+        //   if (d.error) {
+        //     console.log(d.error);
+        //   }
+        //   else {
+        //     this.inputType=d.data;
+        //   }
+        // });
+        this.getRecrods(customKeyboardService.type);
     }
     /**
      * @param {?} Json
      * @return {?}
      */
     CustomKeyboardComponent.prototype.getRecrods = function (Json) {
-        // this.customKeyboardService.setInputReference().subscribe(value => {
-        //   this.inputType = value;
-        //  });
+        var _this = this;
+        this.customKeyboardService.setInputReference().subscribe(function (value) {
+            _this.inputType = value;
+        });
     };
     /**
      * @return {?}
