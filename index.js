@@ -13,13 +13,16 @@ var CustomKeyboardService = (function () {
     function CustomKeyboardService(_http) {
         this._http = _http;
     }
+    /**
+     * @return {?}
+     */
+    CustomKeyboardService.prototype.setInputReference = function () {
+        alert(this.type + "service");
+        return this._http.get(this.type)
+            .map(function (response) { return response.json(); });
+    };
     return CustomKeyboardService;
 }());
-//  setInputReference(): Observable<any> {
-//     alert(this.type+"service")
-//    return this._http.get(this.type)
-//    .map(response => response.json());
-//  }
 // filterOn(id: string): Observable<any> {
 //     return (this.subject.filter(d => (d.id === id)));
 // };
@@ -55,10 +58,21 @@ var CustomKeyboardComponent = (function () {
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
-        //this.getRecrods(customKeyboardService.type);
+        this.getRecrods(customKeyboardService.type);
         customKeyboardService.type = this.inputType;
         alert(this.inputType);
     }
+    /**
+     * @param {?} Json
+     * @return {?}
+     */
+    CustomKeyboardComponent.prototype.getRecrods = function (Json) {
+        var _this = this;
+        this.customKeyboardService.setInputReference().subscribe(function (value) {
+            alert(value + "service value");
+            _this.inputType = value;
+        });
+    };
     /**
      * @return {?}
      */
@@ -73,7 +87,6 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.keyPress = function (event) {
-        this.customKeyboardService.type = this.inputType;
         if (event.keyCode == "27" || event.keyCode == "13") {
             console.log(String.fromCharCode(event.keyCode));
         }
@@ -125,7 +138,6 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.click = function (item, inputTextArea) {
-        this.customKeyboardService.type = this.inputType;
         this.getCaretPos(inputTextArea); //Get Cursor Position From Text Area
         if (item === "Esc" || item === "Enter") {
             console.log(item);
@@ -171,7 +183,6 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.getCaretPos = function (oField) {
-        this.customKeyboardService.type = this.inputType;
         this.inputTextArea = oField;
         if (oField.selectionStart || oField.selectionStart == '0') {
             this.caretPos = oField.selectionStart;
