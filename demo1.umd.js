@@ -1,23 +1,28 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/forms')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/forms'], factory) :
-	(factory((global.demo1 = {}),global.core,global.common,global.forms));
-}(this, (function (exports,core,common,forms) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('custom-keyboard.service'), require('rxjs/add/operator/toPromise'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/map'), require('@angular/forms')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', 'custom-keyboard.service', 'rxjs/add/operator/toPromise', 'rxjs/add/operator/catch', 'rxjs/add/operator/map', '@angular/forms'], factory) :
+	(factory((global.demo1 = {}),global.core,global.common,global.customKeyboard_service,null,null,null,global.forms));
+}(this, (function (exports,core,common,customKeyboard_service,toPromise,_catch,map,forms) { 'use strict';
 
 var CustomKeyboardComponent = (function () {
-    function CustomKeyboardComponent() {
+    /**
+     * @param {?} customKeyboardService
+     */
+    function CustomKeyboardComponent(customKeyboardService) {
+        var _this = this;
+        this.customKeyboardService = customKeyboardService;
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
-        // this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(d => {
-        //   if (d.error) {
-        //     console.log(d.error);
-        //   }
-        //   else {
-        //     this.inputType=d.data;
-        //   }
-        // });
+        this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(function (d) {
+            if (d.error) {
+                console.log(d.error);
+            }
+            else {
+                _this.inputType = d.data;
+            }
+        });
     }
     /**
      * @param {?} Json
@@ -36,7 +41,7 @@ var CustomKeyboardComponent = (function () {
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.caretPos = 0;
-        this.inputType = "";
+        //this.inputType= "";
     };
     /**
      * @param {?} event
@@ -169,7 +174,7 @@ var CustomKeyboardComponent = (function () {
 CustomKeyboardComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'custom-keyboard-component',
-                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea [(type)]=\"inputType\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
+                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea customKeyboardDirective [(type)]=\"inputType\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
                 styles: [".button-group{ height: 100px; width: calc(100% - 100px); float: left; min-width: 990px; } .button{ width:calc((100%)/15); height: 50%; padding: 0px; background-color: black; color: white; } .keyboard{ height: 230px; width: 100%; float: left; background-color: aqua; padding-top: 18px; } "],
                 host: { '(window:keyup)': 'keyPress($event)' }
             },] },
@@ -177,7 +182,9 @@ CustomKeyboardComponent.decorators = [
 /**
  * @nocollapse
  */
-CustomKeyboardComponent.ctorParameters = function () { return []; };
+CustomKeyboardComponent.ctorParameters = function () { return [
+    { type: customKeyboard_service.CustomKeyboardService, },
+]; };
 
 var CustomKeyboardDirective = (function () {
     /**
@@ -228,42 +235,34 @@ CustomKeyboardPipe.decorators = [
  */
 CustomKeyboardPipe.ctorParameters = function () { return []; };
 
-var CustomKeyboardService = (function () {
-    function CustomKeyboardService() {
+var CustomKeyboardService$1 = (function () {
+    function CustomKeyboardService$$1() {
     }
-    return CustomKeyboardService;
+    /**
+     * @param {?} id
+     * @return {?}
+     */
+    CustomKeyboardService$$1.prototype.filterOn = function (id) {
+        return (this.subject.filter(function (d) { return (d.id === id); }));
+    };
+    
+    /**
+     * @param {?} id
+     * @param {?=} options
+     * @return {?}
+     */
+    CustomKeyboardService$$1.prototype.emit = function (id, options) {
+        this.subject.next({ id: id, data: options });
+    };
+    return CustomKeyboardService$$1;
 }());
-//subject: Subject<any>;
-// customKeyboardComponentInput:any;
-//   constructor(public http: Http) {
-//     alert("hii");
-//this.customKeyboardComponentInput=this.customKeyboardComponent;
-//   }
-// setInputReference(inputType) { 
-//   this. customKeyboardComponentInput = inputType;
-//  }
-//  response: any;
-//  jsonURL:any;
-//  setInputReference(): Observable<any> {
-//    return this.http.get(this.jsonURL)
-//    .map(response => response.json());
-//  }
-//   ngOnInit(): void {
-//     this.emit('inputType','password')
-//   }
-//   filterOn(id: string): Observable<any> {
-//     return (this.subject.filter(d => (d.id === id)));
-// };
-// emit(id: string, options?: any) {
-//   this.subject.next({ id: id, data: options });
-// }
-CustomKeyboardService.decorators = [
+CustomKeyboardService$1.decorators = [
     { type: core.Injectable },
 ];
 /**
  * @nocollapse
  */
-CustomKeyboardService.ctorParameters = function () { return []; };
+CustomKeyboardService$1.ctorParameters = function () { return []; };
 
 var CustomKeyboardModule = (function () {
     function CustomKeyboardModule() {
@@ -274,7 +273,7 @@ var CustomKeyboardModule = (function () {
     CustomKeyboardModule.forRoot = function () {
         return {
             ngModule: CustomKeyboardModule,
-            providers: [CustomKeyboardService]
+            providers: [CustomKeyboardService$1]
         };
     };
     return CustomKeyboardModule;
@@ -306,7 +305,7 @@ exports.CustomKeyboardModule = CustomKeyboardModule;
 exports.CustomKeyboardComponent = CustomKeyboardComponent;
 exports.CustomKeyboardDirective = CustomKeyboardDirective;
 exports.CustomKeyboardPipe = CustomKeyboardPipe;
-exports.CustomKeyboardService = CustomKeyboardService;
+exports.CustomKeyboardService = CustomKeyboardService$1;
 
 Object.defineProperty(exports, '__esModule', { value: true });
 
