@@ -11,16 +11,13 @@ var CustomKeyboardService = (function () {
     function CustomKeyboardService(_http) {
         this._http = _http;
     }
-    /**
-     * @return {?}
-     */
-    CustomKeyboardService.prototype.setInputReference = function () {
-        alert(this.type + "service");
-        return this._http.get(this.type)
-            .map(function (response) { return response.json(); });
-    };
     return CustomKeyboardService;
 }());
+//  setInputReference(): Observable<any> {
+//     alert(this.type+"service")
+//    return this._http.get(this.type)
+//    .map(response => response.json());
+//  }
 // filterOn(id: string): Observable<any> {
 //     return (this.subject.filter(d => (d.id === id)));
 // };
@@ -56,20 +53,10 @@ var CustomKeyboardComponent = (function () {
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
-        this.getRecrods(customKeyboardService.type);
+        //this.getRecrods(customKeyboardService.type);
         customKeyboardService.type = this.inputType;
+        alert(this.inputType);
     }
-    /**
-     * @param {?} Json
-     * @return {?}
-     */
-    CustomKeyboardComponent.prototype.getRecrods = function (Json) {
-        var _this = this;
-        this.customKeyboardService.setInputReference().subscribe(function (value) {
-            alert(value + "service value");
-            _this.inputType = value;
-        });
-    };
     /**
      * @return {?}
      */
@@ -84,6 +71,7 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.keyPress = function (event) {
+        this.customKeyboardService.type = this.inputType;
         if (event.keyCode == "27" || event.keyCode == "13") {
             console.log(String.fromCharCode(event.keyCode));
         }
@@ -135,6 +123,7 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.click = function (item, inputTextArea) {
+        this.customKeyboardService.type = this.inputType;
         this.getCaretPos(inputTextArea); //Get Cursor Position From Text Area
         if (item === "Esc" || item === "Enter") {
             console.log(item);
@@ -180,6 +169,7 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.getCaretPos = function (oField) {
+        this.customKeyboardService.type = this.inputType;
         this.inputTextArea = oField;
         if (oField.selectionStart || oField.selectionStart == '0') {
             this.caretPos = oField.selectionStart;
@@ -210,7 +200,7 @@ var CustomKeyboardComponent = (function () {
 CustomKeyboardComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'custom-keyboard-component',
-                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea  [type]=\"inputType === 'Password' ? 'password' : 'text'\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
+                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea  [(type)]=\"inputType\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
                 styles: [".button-group{ height: 100px; width: calc(100% - 100px); float: left; min-width: 990px; } .button{ width:calc((100%)/15); height: 50%; padding: 0px; background-color: black; color: white; } .keyboard{ height: 230px; width: 100%; float: left; background-color: aqua; padding-top: 18px; } "],
                 host: { '(window:keyup)': 'keyPress($event)' }
             },] },
