@@ -17,7 +17,7 @@ var CustomKeyboardService = (function () {
      * @return {?}
      */
     CustomKeyboardService.prototype.setInputReference = function () {
-        alert(this.type);
+        alert(this.type + "service");
         return this._http.get(this.type)
             .map(function (response) { return response.json(); });
     };
@@ -59,6 +59,7 @@ var CustomKeyboardComponent = (function () {
         //     alert(this.inputType);
         //   }
         // });
+        alert(this.inputType + "component");
         this.getRecrods(customKeyboardService.type);
     }
     /**
