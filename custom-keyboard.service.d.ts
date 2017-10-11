@@ -11,4 +11,6 @@ export declare class CustomKeyboardService {
     type: any;
     constructor(_http: Http);
     setInputReference(): Observable<any>;
+    filterOn(id: string): Observable<any>;
+    emit(id: string, options?: any): void;
 }

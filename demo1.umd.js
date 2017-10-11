@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/http'), require('rxjs/add/operator/toPromise'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/map'), require('@angular/forms')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/http', 'rxjs/add/operator/toPromise', 'rxjs/add/operator/catch', 'rxjs/add/operator/map', '@angular/forms'], factory) :
-	(factory((global.demo1 = {}),global.core,global.common,global.http,null,null,null,global.forms));
-}(this, (function (exports,core,common,http,toPromise,_catch,map,forms) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/http'), require('rxjs/add/operator/toPromise'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/map'), require('rxjs/Subject'), require('@angular/forms')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/http', 'rxjs/add/operator/toPromise', 'rxjs/add/operator/catch', 'rxjs/add/operator/map', 'rxjs/Subject', '@angular/forms'], factory) :
+	(factory((global.demo1 = {}),global.core,global.common,global.http,null,null,null,global.Subject,global.forms));
+}(this, (function (exports,core,common,http,toPromise,_catch,map,Subject,forms) { 'use strict';
 
 var CustomKeyboardService = (function () {
     /**
@@ -10,23 +10,35 @@ var CustomKeyboardService = (function () {
      */
     function CustomKeyboardService(_http) {
         this._http = _http;
+        this.subject = new Subject.Subject();
     }
     /**
      * @return {?}
      */
     CustomKeyboardService.prototype.setInputReference = function () {
         alert(this.type + "service");
+        this.emit('input:type:change', this.type);
         return this._http.get(this.type)
             .map(function (response) { return response.json(); });
     };
+    /**
+     * @param {?} id
+     * @return {?}
+     */
+    CustomKeyboardService.prototype.filterOn = function (id) {
+        return (this.subject.filter(function (d) { return (d.id === id); }));
+    };
+    
+    /**
+     * @param {?} id
+     * @param {?=} options
+     * @return {?}
+     */
+    CustomKeyboardService.prototype.emit = function (id, options) {
+        this.subject.next({ id: id, data: options });
+    };
     return CustomKeyboardService;
 }());
-// filterOn(id: string): Observable<any> {
-//     return (this.subject.filter(d => (d.id === id)));
-// };
-// emit(id: string, options?: any) {
-//   this.subject.next({ id: id, data: options });
-// }
 CustomKeyboardService.decorators = [
     { type: core.Injectable },
 ];
@@ -42,23 +54,16 @@ var CustomKeyboardComponent = (function () {
      * @param {?} customKeyboardService
      */
     function CustomKeyboardComponent(customKeyboardService) {
-        // this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(d => {
-        //   if (d.error) {
-        //     console.log(d.error);
-        //   }
-        //   else {
-        //     this.inputType=d.data;
-        //     alert(this.inputType);
-        //   }
-        // });
+        var _this = this;
         this.customKeyboardService = customKeyboardService;
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
         this.getRecrods(customKeyboardService.type);
-        // customKeyboardService.type= this.inputType;
-        // alert(this.inputType);
+        this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
+            _this.inputType = d.dat;
+        });
     }
     /**
      * @param {?} Json
@@ -68,7 +73,6 @@ var CustomKeyboardComponent = (function () {
         var _this = this;
         this.customKeyboardService.setInputReference().subscribe(function (value) {
             _this.inputType = value;
-            alert(value + "service value");
         });
     };
     /**
