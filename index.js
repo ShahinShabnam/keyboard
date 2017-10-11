@@ -59,8 +59,8 @@ var CustomKeyboardComponent = (function () {
         this.inputstr = "";
         this.caretPos = 0;
         this.getRecrods(customKeyboardService.type);
-        customKeyboardService.type = this.inputType;
-        alert(this.inputType);
+        // customKeyboardService.type= this.inputType;
+        // alert(this.inputType);
     }
     /**
      * @param {?} Json
@@ -69,8 +69,8 @@ var CustomKeyboardComponent = (function () {
     CustomKeyboardComponent.prototype.getRecrods = function (Json) {
         var _this = this;
         this.customKeyboardService.setInputReference().subscribe(function (value) {
-            alert(value + "service value");
             _this.inputType = value;
+            alert(value + "service value");
         });
     };
     /**
