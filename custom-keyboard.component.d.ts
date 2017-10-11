@@ -1,8 +1,8 @@
 import { OnInit } from '@angular/core';
-import { CustomKeyboardService } from 'custom-keyboard.service';
+import { CustomKeyboardService } from './custom-keyboard.service';
 import { Subscription } from 'rxjs';
 export declare class CustomKeyboardComponent implements OnInit {
-    private customKeyboardService;
+    customKeyboardService: CustomKeyboardService;
     subscriptions: Subscription;
     CapsLock: boolean;
     keys: string[];

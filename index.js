@@ -1,10 +1,38 @@
 import { Component, Directive, ElementRef, Injectable, NgModule, Pipe } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CustomKeyboardService } from 'custom-keyboard.service';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import { FormsModule } from '@angular/forms';
+
+var CustomKeyboardService = (function () {
+    function CustomKeyboardService() {
+    }
+    /**
+     * @param {?} id
+     * @return {?}
+     */
+    CustomKeyboardService.prototype.filterOn = function (id) {
+        return (this.subject.filter(function (d) { return (d.id === id); }));
+    };
+    
+    /**
+     * @param {?} id
+     * @param {?=} options
+     * @return {?}
+     */
+    CustomKeyboardService.prototype.emit = function (id, options) {
+        this.subject.next({ id: id, data: options });
+    };
+    return CustomKeyboardService;
+}());
+CustomKeyboardService.decorators = [
+    { type: Injectable },
+];
+/**
+ * @nocollapse
+ */
+CustomKeyboardService.ctorParameters = function () { return []; };
 
 var CustomKeyboardComponent = (function () {
     /**
@@ -176,7 +204,7 @@ var CustomKeyboardComponent = (function () {
 CustomKeyboardComponent.decorators = [
     { type: Component, args: [{
                 selector: 'custom-keyboard-component',
-                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea customKeyboardDirective [(type)]=\"inputType\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
+                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea  [(type)]=\"inputType\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
                 styles: [".button-group{ height: 100px; width: calc(100% - 100px); float: left; min-width: 990px; } .button{ width:calc((100%)/15); height: 50%; padding: 0px; background-color: black; color: white; } .keyboard{ height: 230px; width: 100%; float: left; background-color: aqua; padding-top: 18px; } "],
                 host: { '(window:keyup)': 'keyPress($event)' }
             },] },
@@ -237,35 +265,6 @@ CustomKeyboardPipe.decorators = [
  */
 CustomKeyboardPipe.ctorParameters = function () { return []; };
 
-var CustomKeyboardService$1 = (function () {
-    function CustomKeyboardService$$1() {
-    }
-    /**
-     * @param {?} id
-     * @return {?}
-     */
-    CustomKeyboardService$$1.prototype.filterOn = function (id) {
-        return (this.subject.filter(function (d) { return (d.id === id); }));
-    };
-    
-    /**
-     * @param {?} id
-     * @param {?=} options
-     * @return {?}
-     */
-    CustomKeyboardService$$1.prototype.emit = function (id, options) {
-        this.subject.next({ id: id, data: options });
-    };
-    return CustomKeyboardService$$1;
-}());
-CustomKeyboardService$1.decorators = [
-    { type: Injectable },
-];
-/**
- * @nocollapse
- */
-CustomKeyboardService$1.ctorParameters = function () { return []; };
-
 var CustomKeyboardModule = (function () {
     function CustomKeyboardModule() {
     }
@@ -275,7 +274,7 @@ var CustomKeyboardModule = (function () {
     CustomKeyboardModule.forRoot = function () {
         return {
             ngModule: CustomKeyboardModule,
-            providers: [CustomKeyboardService$1]
+            providers: [CustomKeyboardService]
         };
     };
     return CustomKeyboardModule;
@@ -303,4 +302,4 @@ CustomKeyboardModule.decorators = [
  */
 CustomKeyboardModule.ctorParameters = function () { return []; };
 
-export { CustomKeyboardModule, CustomKeyboardComponent, CustomKeyboardDirective, CustomKeyboardPipe, CustomKeyboardService$1 as CustomKeyboardService };
+export { CustomKeyboardModule, CustomKeyboardComponent, CustomKeyboardDirective, CustomKeyboardPipe, CustomKeyboardService };
