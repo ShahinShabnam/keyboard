@@ -1,8 +1,8 @@
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/http'), require('rxjs/add/operator/toPromise'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/map'), require('rxjs/Subject'), require('@angular/forms')) :
-	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/http', 'rxjs/add/operator/toPromise', 'rxjs/add/operator/catch', 'rxjs/add/operator/map', 'rxjs/Subject', '@angular/forms'], factory) :
-	(factory((global.demo1 = {}),global.core,global.common,global.http,null,null,null,global.Subject,global.forms));
-}(this, (function (exports,core,common,http,toPromise,_catch,map,Subject,forms) { 'use strict';
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('@angular/core'), require('@angular/common'), require('@angular/http'), require('rxjs/add/operator/toPromise'), require('rxjs/add/operator/catch'), require('rxjs/add/operator/map'), require('rxjs/add/operator/filter'), require('rxjs/Subject'), require('@angular/forms')) :
+	typeof define === 'function' && define.amd ? define(['exports', '@angular/core', '@angular/common', '@angular/http', 'rxjs/add/operator/toPromise', 'rxjs/add/operator/catch', 'rxjs/add/operator/map', 'rxjs/add/operator/filter', 'rxjs/Subject', '@angular/forms'], factory) :
+	(factory((global.demo1 = {}),global.core,global.common,global.http,null,null,null,null,global.Subject,global.forms));
+}(this, (function (exports,core,common,http,toPromise,_catch,map,filter,Subject,forms) { 'use strict';
 
 var CustomKeyboardService = (function () {
     /**

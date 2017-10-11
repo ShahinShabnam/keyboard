@@ -4,6 +4,7 @@ import { Http } from '@angular/http';
 import 'rxjs/add/operator/toPromise';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import { Subject as Subject$1 } from 'rxjs/Subject';
 import { FormsModule } from '@angular/forms';
 
