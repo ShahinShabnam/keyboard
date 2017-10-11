@@ -9,7 +9,7 @@ export declare class CustomKeyboardComponent implements OnInit {
     inputstr: string;
     caretPos: number;
     inputTextArea: any;
-    inputType: string;
+    inputType: any;
     constructor(customKeyboardService: CustomKeyboardService);
     getRecrods(Json: any): void;
     ngOnInit(): void;
