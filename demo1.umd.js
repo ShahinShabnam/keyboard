@@ -12,11 +12,20 @@ var CustomKeyboardService = (function () {
         this._http = _http;
     }
     /**
+     * @param {?} id
      * @return {?}
      */
-    CustomKeyboardService.prototype.setInputReference = function () {
-        return this._http.get(this.type)
-            .map(function (response) { return response.json(); });
+    CustomKeyboardService.prototype.filterOn = function (id) {
+        return (this.subject.filter(function (d) { return (d.id === id); }));
+    };
+    
+    /**
+     * @param {?} id
+     * @param {?=} options
+     * @return {?}
+     */
+    CustomKeyboardService.prototype.emit = function (id, options) {
+        this.subject.next({ id: id, data: options });
     };
     return CustomKeyboardService;
 }());
@@ -35,25 +44,23 @@ var CustomKeyboardComponent = (function () {
      * @param {?} customKeyboardService
      */
     function CustomKeyboardComponent(customKeyboardService) {
+        var _this = this;
         this.customKeyboardService = customKeyboardService;
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
-        this.getRecrods(customKeyboardService.type);
+        this.subscriptions = this.customKeyboardService.filterOn('inputType').subscribe(function (d) {
+            if (d.error) {
+                console.log(d.error);
+            }
+            else {
+                _this.inputType = d.data;
+            }
+        });
+        //this.getRecrods(customKeyboardService.type);
         alert(this.inputType);
     }
-    /**
-     * @param {?} Json
-     * @return {?}
-     */
-    CustomKeyboardComponent.prototype.getRecrods = function (Json) {
-        var _this = this;
-        this.customKeyboardService.setInputReference().subscribe(function (value) {
-            alert(value);
-            _this.inputType = value;
-        });
-    };
     /**
      * @return {?}
      */

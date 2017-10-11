@@ -11,7 +11,6 @@ export declare class CustomKeyboardComponent implements OnInit {
     inputTextArea: any;
     inputType: any;
     constructor(customKeyboardService: CustomKeyboardService);
-    getRecrods(Json: any): void;
     ngOnInit(): void;
     keyPress(event: any): void;
     Caps(): void;
