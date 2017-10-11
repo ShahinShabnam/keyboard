@@ -58,16 +58,15 @@ var CustomKeyboardComponent = (function () {
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
-        this.getRecrods(customKeyboardService.type);
+        this.getRecrods();
     }
     /**
-     * @param {?} Json
      * @return {?}
      */
-    CustomKeyboardComponent.prototype.getRecrods = function (Json) {
+    CustomKeyboardComponent.prototype.getRecrods = function () {
         var _this = this;
         this.customKeyboardService.setInputReference().subscribe(function (value) {
-            alert(value + "service value");
+            alert(value + "service get records value");
             _this.inputType = value;
         });
     };
