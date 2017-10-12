@@ -5,9 +5,12 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/filter';
 import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
 export declare class CustomKeyboardService {
     private _http;
     subject: Subject<any>;
+    subscriptions: Subscription;
+    inputType: any;
     response: any;
     type: any;
     constructor(_http: Http);
