@@ -17,13 +17,13 @@ var CustomKeyboardService = (function () {
         this.subject = new Subject$1();
     }
     /**
+     * @param {?} passvalue
      * @return {?}
      */
-    CustomKeyboardService.prototype.setInputReference = function () {
-        alert(this.type + "service");
-        this.emit('input:type:change', this.type);
-        //  return this._http.get(this.type)
-        //  .map(response => response.json());
+    CustomKeyboardService.prototype.passvalue = function (passvalue) {
+        alert(passvalue);
+        console.log(passvalue);
+        this.emit('input:type:change', passvalue);
     };
     /**
      * @param {?} id
