@@ -27,7 +27,7 @@ var CustomKeyboardService = (function () {
      * @return {?}
      */
     CustomKeyboardService.prototype.filterOn = function (id) {
-        alert(this.subject + "filteron");
+        alert(id + "filteron");
         return (this.subject.filter(function (d) { return (d.id === id); }));
     };
     
@@ -38,7 +38,7 @@ var CustomKeyboardService = (function () {
      */
     CustomKeyboardService.prototype.emit = function (id, options) {
         this.subject.next({ id: id, data: options });
-        alert(this.subject + "emit");
+        alert(options + "emit");
     };
     return CustomKeyboardService;
 }());
