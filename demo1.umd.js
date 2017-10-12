@@ -18,7 +18,7 @@ var CustomKeyboardService = (function () {
      * @return {?}
      */
     CustomKeyboardService.prototype.passvalue = function (passvalue) {
-        alert(passvalue);
+        alert(passvalue + "service");
         console.log(passvalue);
         this.emit('input:type:change', passvalue);
     };
@@ -71,10 +71,15 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.ngOnInit = function () {
+        var _this = this;
         this.inputstr = "";
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.caretPos = 0;
+        this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
+            alert(d.data + "ngon");
+            _this.inputType = d.data;
+        });
     };
     /**
      * @param {?} event
@@ -83,7 +88,7 @@ var CustomKeyboardComponent = (function () {
     CustomKeyboardComponent.prototype.keyPress = function (event) {
         var _this = this;
         this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
-            alert(d.data);
+            alert(d.data + "keypress");
             _this.inputType = d.data;
         });
         if (event.keyCode == "27" || event.keyCode == "13") {
@@ -104,7 +109,7 @@ var CustomKeyboardComponent = (function () {
     CustomKeyboardComponent.prototype.Caps = function () {
         var _this = this;
         this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
-            alert(d.data);
+            alert(d.data + "caps");
             _this.inputType = d.data;
         });
         if (this.CapsLock) {
@@ -144,7 +149,7 @@ var CustomKeyboardComponent = (function () {
     CustomKeyboardComponent.prototype.click = function (item, inputTextArea) {
         var _this = this;
         this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
-            alert(d.data);
+            alert(d.data + "click");
             _this.inputType = d.data;
         });
         this.getCaretPos(inputTextArea); //Get Cursor Position From Text Area
