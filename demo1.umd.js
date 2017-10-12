@@ -18,8 +18,8 @@ var CustomKeyboardService = (function () {
     CustomKeyboardService.prototype.setInputReference = function () {
         alert(this.type + "service");
         this.emit('input:type:change', this.type);
-        return this._http.get(this.type)
-            .map(function (response) { return response.json(); });
+        //  return this._http.get(this.type)
+        //  .map(response => response.json());
     };
     /**
      * @param {?} id
@@ -54,6 +54,7 @@ var CustomKeyboardComponent = (function () {
      * @param {?} customKeyboardService
      */
     function CustomKeyboardComponent(customKeyboardService) {
+        // this.getRecrods(customKeyboardService.type);
         var _this = this;
         this.customKeyboardService = customKeyboardService;
         this.CapsLock = false;
@@ -61,21 +62,10 @@ var CustomKeyboardComponent = (function () {
         this.inputstr = "";
         this.caretPos = 0;
         this.inputType = "text";
-        this.getRecrods(customKeyboardService.type);
         this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
             _this.inputType = d.data;
         });
     }
-    /**
-     * @param {?} Json
-     * @return {?}
-     */
-    CustomKeyboardComponent.prototype.getRecrods = function (Json) {
-        var _this = this;
-        this.customKeyboardService.setInputReference().subscribe(function (value) {
-            _this.inputType = value;
-        });
-    };
     /**
      * @return {?}
      */
@@ -216,7 +206,7 @@ var CustomKeyboardComponent = (function () {
 CustomKeyboardComponent.decorators = [
     { type: core.Component, args: [{
                 selector: 'custom-keyboard-component',
-                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea [type] = \"inputType === 'Password' ? 'password' : 'text'\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
+                template: "\n  <div class=\"keyboard\">\n  <input id=\"input\" #inputTextArea [(type)] = \"inputType\" (click)=\"getCaretPos(inputTextArea)\"  (keyup)=\"getCaretPos(inputTextArea)\" [ngModel]=\"inputstr\" style=\"width:90%;margin-left: 17px;\" />\n  <br>\n  <br>\n  <div class=\"button-group\">\n    <button *ngFor=\"let key of keys\" class=\"button\" (click)=\"click(key,inputTextArea)\">\n      {{key}}\n    </button>\n  </div>\n</div>\n",
                 styles: [".button-group{ height: 100px; width: calc(100% - 100px); float: left; min-width: 990px; } .button{ width:calc((100%)/15); height: 50%; padding: 0px; background-color: black; color: white; } .keyboard{ height: 230px; width: 100%; float: left; background-color: aqua; padding-top: 18px; } "],
                 host: { '(window:keyup)': 'keyPress($event)' }
             },] },
