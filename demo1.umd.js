@@ -9,16 +9,22 @@ var CustomKeyboardService = (function () {
      * @param {?} _http
      */
     function CustomKeyboardService(_http) {
-        var _this = this;
         this._http = _http;
         alert('app service constructor called');
+        this.subject = new Subject.Subject();
+        
+    }
+    /**
+     * @return {?}
+     */
+    CustomKeyboardService.prototype.ngOnInit = function () {
+        var _this = this;
+        alert("ngOnInit");
         this.subscriptions = this.filterOn('input:type:change').subscribe(function (d) {
             alert(d.data + "components");
             _this.inputType = d.data;
         });
-        this.subject = new Subject.Subject();
-        
-    }
+    };
     
     /**
      * @param {?} passvalue
