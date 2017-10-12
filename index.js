@@ -15,6 +15,7 @@ var CustomKeyboardService = (function () {
     function CustomKeyboardService(_http) {
         this._http = _http;
         this.subject = new Subject$1();
+        
     }
     /**
      * @param {?} passvalue
@@ -68,7 +69,7 @@ var CustomKeyboardComponent = (function () {
         this.inputstr = "";
         this.caretPos = 0;
         this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
-            alert(d.data);
+            alert(d.data + "components");
             _this.inputType = d.data;
         });
     }
@@ -77,15 +78,10 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.inputstr = "";
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.caretPos = 0;
-        this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
-            alert(d.data + "ngon");
-            _this.inputType = d.data;
-        });
     };
     /**
      * @param {?} event
