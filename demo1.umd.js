@@ -11,6 +11,7 @@ var CustomKeyboardService = (function () {
     function CustomKeyboardService(_http) {
         this._http = _http;
         this.subject = new Subject.Subject();
+        alert(this.subject);
     }
     /**
      * @param {?} passvalue
@@ -55,17 +56,16 @@ var CustomKeyboardComponent = (function () {
      */
     function CustomKeyboardComponent(customKeyboardService) {
         // this.getRecrods(customKeyboardService.type);
-        var _this = this;
         this.customKeyboardService = customKeyboardService;
         this.CapsLock = false;
         this.keys = ["Esc", "q", "w", "e", "r", "t", "y", "u", "i", "o", "p", "bksp", "7", "8", "9", "Caps", "a", "s", "d", "f", "g", "h", "j", "k", "l", "Enter", "4", "5", "6", "<--", "z", "x", "c", "v", "b", "n", "m", "-", "-->", "1", "2", "3", "Spacebar", "0", "Enter"];
         this.inputstr = "";
         this.caretPos = 0;
         this.inputType = "text";
-        this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
-            alert(d.data);
-            _this.inputType = d.data;
-        });
+        // this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(d=>{
+        //   alert(d.data);
+        //   this.inputType = d.data;
+        // });
     }
     /**
      * @return {?}
@@ -81,6 +81,11 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.keyPress = function (event) {
+        var _this = this;
+        this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
+            alert(d.data);
+            _this.inputType = d.data;
+        });
         if (event.keyCode == "27" || event.keyCode == "13") {
             console.log(String.fromCharCode(event.keyCode));
         }
@@ -97,6 +102,11 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.Caps = function () {
+        var _this = this;
+        this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
+            alert(d.data);
+            _this.inputType = d.data;
+        });
         if (this.CapsLock) {
             this.CapsLock = !this.CapsLock;
             for (var /** @type {?} */ i = 0; i <= 36; i++) {
@@ -132,6 +142,11 @@ var CustomKeyboardComponent = (function () {
      * @return {?}
      */
     CustomKeyboardComponent.prototype.click = function (item, inputTextArea) {
+        var _this = this;
+        this.subscriptions = this.customKeyboardService.filterOn('input:type:change').subscribe(function (d) {
+            alert(d.data);
+            _this.inputType = d.data;
+        });
         this.getCaretPos(inputTextArea); //Get Cursor Position From Text Area
         if (item === "Esc" || item === "Enter") {
             console.log(item);
